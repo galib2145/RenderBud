@@ -1,0 +1,8 @@
+
+*.layout
+*.depend
+*.svg
+*.ppm
+bin/
+obj/
+
