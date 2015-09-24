@@ -5,8 +5,19 @@
 #include <intersection.h>
 
 class Object {
+protected:
+    Vec3f color;
 public:
-    virtual bool intersect(const Ray &ray, Intersection &Intersection) = 0;
+    virtual bool intersect(const Ray &ray, Intersection &intersection) = 0;
+};
+
+class Plane : public Object {
+protected:
+    Vec3f point, normal;
+    bool boolseye;
+public:
+    Plane(Vec3f point, Vec3f normal, Vec3f color, bool boolseye);
+    bool intersect(const Ray &ray, Intersection &intersection);
 };
 
 

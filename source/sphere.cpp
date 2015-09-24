@@ -1,9 +1,10 @@
 #include <objects/sphere.h>
 #include <utils.h>
 
-Sphere::Sphere(Vec3f &center, float radius) {
+Sphere::Sphere(Vec3f center, float radius, Vec3f color) {
     this->center = center;
     this->radius = radius;
+    this->color = color;
 }
 
 bool Sphere::intersect(const Ray &ray, Intersection &intersection) {
@@ -24,7 +25,7 @@ bool Sphere::intersect(const Ray &ray, Intersection &intersection) {
     }
 
     intersection.t = t0;
-    intersection.color = Vec3f(1, 0, 1);
+    intersection.color = color;
     intersection.normal = Vec3f(0,0,0);
     intersection.object = this;
 

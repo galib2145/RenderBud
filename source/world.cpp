@@ -16,10 +16,14 @@ void World::initializeCamera(Camera &camera) {
 
 void World::build() {
     this->tracer = new Tracer(this);
-    Vec3f center = Vec3f(0, 0, -2);
-    //Sphere sphere(center, 4.0f);
-    Object* sphere = new Sphere(center, .4f);
+
+    //*********The Dangling pointer problem************//
+               //Sphere sphere(center, 4.0f);
+
+    Object* sphere = new Sphere(Vec3f(0, 2, -3), .4f, Vec3f(0, 0, 1));
+    Object* plane = new Plane(Vec3f(0, -2, 0), Vec3f(0, -1, 0), Vec3f(1, 1, 1), true);
     objectSet.addObject(sphere);
+    objectSet.addObject(plane);
 }
 
 void World::render(Display &display, Camera &camera) {
@@ -41,16 +45,8 @@ void World::render(Display &display, Camera &camera) {
             Vec3f direction;
             camera.worldToCamera.multDirMatrix(Vec3f(x, y, -1), direction);
 
-            /*std::cout << display.aspectRatio << std::endl;
-            std::cout << i << ", " << j << std::endl;
-            std::cout << x << ", " << y << std::endl;
-            std::cout << "Ray : " << direction.x << ", " << direction.y << ", " << direction.z << std::endl;
-            std::cout << "" << std::endl;*/
-
             direction.normalize();
-
             Ray ray(origin, direction);
-
             Intersection intersection;
 
             if(objectSet.intersect(ray, intersection)) {
@@ -58,8 +54,6 @@ void World::render(Display &display, Camera &camera) {
             } else {
                 *(pix++) = Vec3f(0,0,0);
             }
-
-            //*(pix++) = this->tracer->traceRay(ray);
 
         }
     }
