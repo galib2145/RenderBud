@@ -30,36 +30,43 @@ void World::render(Display &display, Camera &camera) {
     initializeCamera(camera);
     initializeDisplay(display);
 
+    Rng rng;
+
     Vec3f *framebuffer = new Vec3f[display.width * display.height];
     Vec3f *pix = framebuffer;
+    int noOfSamples = 128;
 
     for(int j = 0; j < display.height; j++) {
         for(int i = 0; i < display.width; i++) {
+            Vec3f pixelColor;
+            for(int k = 1; k <= noOfSamples; k++) {
 
-            Vec3f origin;
-            camera.worldToCamera.multVecMatrix(Vec3f(0), origin);
+                Vec3f origin;
+                camera.worldToCamera.multVecMatrix(Vec3f(0), origin);
 
-            float x = (2 * (i + 0.5) / (float)display.width - 1) * display.aspectRatio * camera.scalingFactor;
-            float y = (1 - 2 * (j + 0.5) / (float)display.height) * camera.scalingFactor;
+                float x = (2 * (i + rng.nextFloat()) / (float)display.width - 1) * display.aspectRatio * camera.scalingFactor;
+                float y = (1 - 2 * (j + rng.nextFloat()) / (float)display.height) * camera.scalingFactor;
 
-            Vec3f direction;
-            camera.worldToCamera.multDirMatrix(Vec3f(x, y, -1), direction);
+                Vec3f direction;
+                camera.worldToCamera.multDirMatrix(Vec3f(x, y, -1), direction);
 
-            direction.normalize();
-            Ray ray(origin, direction);
-            Intersection intersection;
+                direction.normalize();
+                Ray ray(origin, direction);
+                Intersection intersection;
 
-            if(objectSet.intersect(ray, intersection)) {
-                *(pix++) = intersection.color;
-            } else {
-                *(pix++) = Vec3f(0,0,0);
+                if(objectSet.intersect(ray, intersection)) {
+                    pixelColor = pixelColor + intersection.color;
+                }
             }
 
+            pixelColor /= noOfSamples;
+            *(pix++) = pixelColor;
         }
     }
 
     std::ofstream ofs("./out.ppm");
     ofs << "P6\n" << display.width << " " << display.height << "\n255\n";
+
     for (uint32_t i = 0; i < display.height * display.width; ++i) {
         char r = (char)(255 * clamp(0, 1, framebuffer[i].x));
         char g = (char)(255 * clamp(0, 1, framebuffer[i].y));
