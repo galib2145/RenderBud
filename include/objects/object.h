@@ -20,5 +20,15 @@ public:
     bool intersect(const Ray &ray, Intersection &intersection);
 };
 
+class Sphere : public Object {
+private:
+    Vec3f center;
+    float radius;
+public:
+    Sphere(Vec3f center, float radius, Vec3f color);
+    bool intersect(const Ray &ray, Intersection &intersection);
+};
+
+
 
 #endif // OBJECT_H

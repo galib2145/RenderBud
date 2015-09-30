@@ -6,6 +6,8 @@
 #include <camera.h>
 #include <tracer.h>
 #include <objectSet.h>
+#include <objects/light.h>
+#include <list>
 
 class World {
 public:
@@ -14,6 +16,7 @@ public:
     Camera camera;
     Tracer* tracer;
     ObjectSet objectSet;
+    Light* light;
 
     World();
 

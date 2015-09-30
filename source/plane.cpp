@@ -11,7 +11,7 @@ bool Plane::intersect(const Ray &ray, Intersection &intersection) {
     float n, t, d;
     d = ray.direction.dotProduct(normal);
 
-    if(d > 0) {
+    if(d != 0) {
         n = (point - ray.origin).dotProduct(normal);
         t = n / d;
         if(t >= 0) {

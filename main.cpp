@@ -2,7 +2,7 @@
 
 #include <geometry.h>
 #include <ray.h>
-#include <objects/sphere.h>
+#include <objects/object.h>
 #include <display.h>
 #include <camera.h>
 #include <world.h>

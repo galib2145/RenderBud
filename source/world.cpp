@@ -1,7 +1,6 @@
 #include <world.h>
 #include <ray.h>
 #include <fstream>
-#include <objects/sphere.h>
 
 World::World() {
 }
@@ -17,12 +16,12 @@ void World::initializeCamera(Camera &camera) {
 void World::build() {
     this->tracer = new Tracer(this);
 
-    //*********The Dangling pointer problem************//
-               //Sphere sphere(center, 4.0f);
+    Object* sphere1 = new Sphere(Vec3f(0, .5, -1), .35f, Vec3f(1, 1, 1));
+    Object* sphere2 = new Sphere(Vec3f(0, .2, -.5), .15f, Vec3f(1, 1, 1));
+    Object* plane = new Plane(Vec3f(0, -2, 0), Vec3f(0, 1, 0), Vec3f(1, 1, 1), true);
 
-    Object* sphere = new Sphere(Vec3f(0, 2, -3), .4f, Vec3f(0, 0, 1));
-    Object* plane = new Plane(Vec3f(0, -2, 0), Vec3f(0, -1, 0), Vec3f(1, 1, 1), true);
-    objectSet.addObject(sphere);
+    objectSet.addObject(sphere1);
+    objectSet.addObject(sphere2);
     objectSet.addObject(plane);
 }
 
@@ -34,7 +33,7 @@ void World::render(Display &display, Camera &camera) {
 
     Vec3f *framebuffer = new Vec3f[display.width * display.height];
     Vec3f *pix = framebuffer;
-    int noOfSamples = 128;
+    int noOfSamples = 32;
 
     for(int j = 0; j < display.height; j++) {
         for(int i = 0; i < display.width; i++) {
@@ -51,11 +50,14 @@ void World::render(Display &display, Camera &camera) {
                 camera.worldToCamera.multDirMatrix(Vec3f(x, y, -1), direction);
 
                 direction.normalize();
+
+
                 Ray ray(origin, direction);
                 Intersection intersection;
 
                 if(objectSet.intersect(ray, intersection)) {
-                    pixelColor = pixelColor + intersection.color;
+                    float facingRatio = std::max(0.0f, intersection.normal.dotProduct(-ray.direction));
+                    pixelColor = pixelColor + intersection.color * facingRatio;
                 }
             }
 
