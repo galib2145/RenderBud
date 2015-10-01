@@ -19,10 +19,9 @@ bool Plane::intersect(const Ray &ray, Intersection &intersection) {
             intersection.normal = normal;
             intersection.color = color;
             intersection.object = this;
+            intersection.position = ray.origin + ray.direction * t;
 
-            Vec3f intersectionPosition = ray.origin + ray.direction * t;
-
-            if (std::fmod((intersectionPosition - point).length() * 0.25f, 1.0f) > 0.5f)
+            if (std::fmod((intersection.position - point).length() * 0.25f, 1.0f) > 0.5f)
             {
                 intersection.color *= 0.6f;
             }

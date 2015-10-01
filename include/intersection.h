@@ -12,17 +12,18 @@ public:
    Vec3f color;
    Vec3f normal;
    float t;
-   Vec3f point;
+   Vec3f position;
    Object* object;
+   Vec3f emitted;
 
    Intersection() {
    }
 
-   Intersection(Vec3f &color, Vec3f &normal, Vec3f &point, float &t, Object* object) {
+   Intersection(Vec3f &color, Vec3f &normal, Vec3f &position, float &t, Object* object) {
         this->color = color;
         this->normal = normal;
         this->t = t;
-        this->point = point;
+        this->position = position;
         this->object = object;
    }
 };

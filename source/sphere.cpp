@@ -26,12 +26,12 @@ bool Sphere::intersect(const Ray &ray, Intersection &intersection) {
         if (t0 < 0) return false;
     }
 
-    Vec3f hitPoint = ray.getPoint(t0);
+    Vec3f hitPosition = ray.getPoint(t0);
 
     intersection.t = t0;
     intersection.color = color;
-    intersection.point = hitPoint;
-    intersection.normal = intersection.point - center;
+    intersection.position = hitPosition;
+    intersection.normal = intersection.position - center;
     intersection.object = this;
 
     return true;

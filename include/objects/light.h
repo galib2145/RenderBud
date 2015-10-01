@@ -13,6 +13,10 @@ public:
     virtual bool intersect(const Ray &ray, Intersection &intersection) {
         return false;
     }
+
+    Vec3f emitted() {
+        return color * intensity;
+    }
 };
 
 class PointLight : public Light {

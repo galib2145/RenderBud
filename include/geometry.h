@@ -134,6 +134,10 @@ public:
         return s << '[' << v.x << ' ' << v.y << ' ' << v.z << ']';
     }
 
+    void print() {
+        std::cout << x << ", " << y << ", " << z << std::endl;
+    }
+
     T x, y, z;
 };
 

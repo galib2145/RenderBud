@@ -16,8 +16,8 @@ void World::initializeCamera(Camera &camera) {
 void World::build() {
     this->tracer = new Tracer(this);
 
-    Object* sphere1 = new Sphere(Vec3f(0, .5, -1), .35f, Vec3f(1, 1, 1));
-    Object* sphere2 = new Sphere(Vec3f(0, .2, -.5), .15f, Vec3f(1, 1, 1));
+    Object* sphere1 = new Sphere(Vec3f(0, .5, -1), .35f, Vec3f(0, 0, 1));
+    Object* sphere2 = new Sphere(Vec3f(0, .2, -.5), .15f, Vec3f(0, 1, 1));
     Object* plane = new Plane(Vec3f(0, -2, 0), Vec3f(0, 1, 0), Vec3f(1, 1, 1), true);
 
     objectSet.addObject(sphere1);
@@ -28,6 +28,8 @@ void World::build() {
 void World::render(Display &display, Camera &camera) {
     initializeCamera(camera);
     initializeDisplay(display);
+
+    PointLight light = PointLight(Vec3f(1,1,1), 3.0f, Vec3f(0,0,0));
 
     Rng rng;
 
@@ -56,8 +58,11 @@ void World::render(Display &display, Camera &camera) {
                 Intersection intersection;
 
                 if(objectSet.intersect(ray, intersection)) {
-                    float facingRatio = std::max(0.0f, intersection.normal.dotProduct(-ray.direction));
-                    pixelColor = pixelColor + intersection.color * facingRatio;
+                    Vec3f lightDirection = light.position - intersection.position;
+                    lightDirection.normalize();
+                    float facingRatio = std::max(0.0f, intersection.normal.dotProduct(lightDirection));
+                    Vec3f currentColor = intersection.color * facingRatio * light.intensity * light.color;
+                    pixelColor = pixelColor + currentColor;
                 }
             }
 
