@@ -13,6 +13,14 @@ void World::initializeCamera(Camera &camera) {
     this->camera = camera;
 }
 
+void World::addObject(Object* object) {
+    objectSet.addObject(object);
+    if (dynamic_cast<Light*>(object)) {
+        Light* light = dynamic_cast<Light*>(object);
+        lights.push_back(light);
+    }
+}
+
 void World::build() {
     this->tracer = new Tracer(this);
 
@@ -20,9 +28,9 @@ void World::build() {
     Object* sphere2 = new Sphere(Vec3f(0, .2, -.5), .15f, Vec3f(0, 1, 1));
     Object* plane = new Plane(Vec3f(0, -2, 0), Vec3f(0, 1, 0), Vec3f(1, 1, 1), true);
 
-    objectSet.addObject(sphere1);
-    objectSet.addObject(sphere2);
-    objectSet.addObject(plane);
+    addObject(sphere1);
+    addObject(sphere2);
+    addObject(plane);
 }
 
 void World::render(Display &display, Camera &camera) {
@@ -58,6 +66,7 @@ void World::render(Display &display, Camera &camera) {
                 Intersection intersection;
 
                 if(objectSet.intersect(ray, intersection)) {
+                    pixelColor = pixelColor + intersection.emitted;
                     Vec3f lightDirection = light.position - intersection.position;
                     lightDirection.normalize();
                     float facingRatio = std::max(0.0f, intersection.normal.dotProduct(lightDirection));

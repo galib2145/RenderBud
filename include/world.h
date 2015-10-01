@@ -16,7 +16,7 @@ public:
     Camera camera;
     Tracer* tracer;
     ObjectSet objectSet;
-    Light* light;
+    std::list<Light*> lights;
 
     World();
 
@@ -27,6 +27,8 @@ public:
     void initializeCamera(Camera &camera);
 
     void drawPixel(int row, int column, Color color);
+
+    void addObject(Object *object);
 };
 
 #endif // WORLD_H
