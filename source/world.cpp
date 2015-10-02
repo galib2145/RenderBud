@@ -24,6 +24,8 @@ void World::addObject(Object* object) {
 void World::build() {
     this->tracer = new Tracer(this);
 
+    Object* light = new PointLight(Vec3f(1,1,1), 3.0f, Vec3f(0,0,0));
+
     Object* sphere1 = new Sphere(Vec3f(0, .5, -1), .35f, Vec3f(0, 0, 1));
     Object* sphere2 = new Sphere(Vec3f(0, .2, -.5), .15f, Vec3f(0, 1, 1));
     Object* plane = new Plane(Vec3f(0, -2, 0), Vec3f(0, 1, 0), Vec3f(1, 1, 1), true);
@@ -31,13 +33,14 @@ void World::build() {
     addObject(sphere1);
     addObject(sphere2);
     addObject(plane);
+
+    addObject(light);
+
 }
 
 void World::render(Display &display, Camera &camera) {
     initializeCamera(camera);
     initializeDisplay(display);
-
-    PointLight light = PointLight(Vec3f(1,1,1), 3.0f, Vec3f(0,0,0));
 
     Rng rng;
 
@@ -51,6 +54,7 @@ void World::render(Display &display, Camera &camera) {
             for(int k = 1; k <= noOfSamples; k++) {
 
                 Vec3f origin;
+                Intersection intersection;
                 camera.worldToCamera.multVecMatrix(Vec3f(0), origin);
 
                 float x = (2 * (i + rng.nextFloat()) / (float)display.width - 1) * display.aspectRatio * camera.scalingFactor;
@@ -58,21 +62,10 @@ void World::render(Display &display, Camera &camera) {
 
                 Vec3f direction;
                 camera.worldToCamera.multDirMatrix(Vec3f(x, y, -1), direction);
-
                 direction.normalize();
 
-
                 Ray ray(origin, direction);
-                Intersection intersection;
-
-                if(objectSet.intersect(ray, intersection)) {
-                    pixelColor = pixelColor + intersection.emitted;
-                    Vec3f lightDirection = light.position - intersection.position;
-                    lightDirection.normalize();
-                    float facingRatio = std::max(0.0f, intersection.normal.dotProduct(lightDirection));
-                    Vec3f currentColor = intersection.color * facingRatio * light.intensity * light.color;
-                    pixelColor = pixelColor + currentColor;
-                }
+                pixelColor = pixelColor + tracer->trace(ray);
             }
 
             pixelColor /= noOfSamples;

@@ -1,8 +1,10 @@
 #ifndef TRACER_H
 #define TRACER_H
 
-#include <color.h>
 #include <ray.h>
+#include <geometry.h>
+#include <intersection.h>
+
 
 class World;
 
@@ -12,7 +14,7 @@ protected:
 public:
     Tracer();
     Tracer(World* worldPtr);
-    virtual Vec3f traceRay(const Ray &ray);
+    virtual Vec3f trace(const Ray &ray);
 };
 
 

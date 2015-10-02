@@ -17,6 +17,8 @@ public:
     Vec3f emitted() {
         return color * intensity;
     }
+
+    virtual Vec3f shade(Intersection &intersection) = 0;
 };
 
 class PointLight : public Light {
@@ -29,6 +31,14 @@ public:
 
     virtual bool intersect(const Ray &ray, Intersection &intersection) {
         return false;
+    }
+
+    virtual Vec3f shade(Intersection &intersection) {
+        Vec3f lightDirection = position - intersection.position;
+        lightDirection.normalize();
+        float facingRatio = std::max(0.0f, intersection.normal.dotProduct(lightDirection));
+        Vec3f currentColor = intersection.color * facingRatio * intensity * color;
+        return currentColor;
     }
 };
 

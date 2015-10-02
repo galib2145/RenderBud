@@ -1,8 +1,6 @@
 #include <iostream>
 
 #include <geometry.h>
-#include <ray.h>
-#include <objects/object.h>
 #include <display.h>
 #include <camera.h>
 #include <world.h>

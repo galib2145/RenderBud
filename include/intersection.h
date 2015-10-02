@@ -3,7 +3,6 @@
 
 #include <ray.h>
 #include <geometry.h>
-#include <objects/object.h>
 
 class Object;
 

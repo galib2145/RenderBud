@@ -1,7 +1,6 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include <color.h>
 #include <display.h>
 #include <camera.h>
 #include <tracer.h>
@@ -25,8 +24,6 @@ public:
 
     void initializeDisplay(Display &display);
     void initializeCamera(Camera &camera);
-
-    void drawPixel(int row, int column, Color color);
 
     void addObject(Object *object);
 };
