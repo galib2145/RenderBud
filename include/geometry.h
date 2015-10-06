@@ -84,6 +84,8 @@ public:
     Vec3(T xx, T yy, T zz) : x(xx), y(yy), z(zz) {}
     Vec3 operator + (const Vec3 &v) const
     { return Vec3(x + v.x, y + v.y, z + v.z); }
+    Vec3 operator += (const Vec3 &v) const
+    { return Vec3(x + v.x, y + v.y, z + v.z); }
     Vec3 operator - (const Vec3 &v) const
     { return Vec3(x - v.x, y - v.y, z - v.z); }
     Vec3 operator - () const
@@ -95,6 +97,8 @@ public:
     T dotProduct(const Vec3<T> &v) const
     { return x * v.x + y * v.y + z * v.z; }
     Vec3& operator /= (const T &r)
+    { x /= r, y /= r, z /= r; return *this; }
+    Vec3& operator / (const T &r)
     { x /= r, y /= r, z /= r; return *this; }
     Vec3& operator *= (const T &r)
     { x *= r, y *= r, z *= r; return *this; }

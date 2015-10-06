@@ -7,6 +7,10 @@
 #include <objectSet.h>
 #include <objects/light.h>
 #include <list>
+#include <ray.h>
+#include <fstream>
+#include <memory>
+#include <random>
 
 class World {
 public:

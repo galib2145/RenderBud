@@ -1,5 +1,6 @@
 #include <tracer.h>
 #include <world.h>
+#include <ray.h>
 
 Tracer::Tracer(World* worldPtr) : wPtr(worldPtr) {
 }
@@ -13,8 +14,24 @@ Vec3f Tracer::trace(const Ray &ray) {
 
         for (std::list<Light*>::iterator it = wPtr->lights.begin(); it != wPtr->lights.end(); ++it) {
             Light* light = *it;
-            Vec3f currentColor = light->shade(intersection);
-            pixelColor = pixelColor + currentColor;
+            Vec3f currentColor;
+
+            float tLight;
+            Vec3f lightDirection = light->getDirection(intersection, tLight);
+            lightDirection.normalize();
+
+            Vec3f shadowRayOrigin = intersection.position +  intersection.normal * 0.001f;
+            Vec3f shadowRayDirection = lightDirection;
+            Ray shadowRay(shadowRayOrigin, shadowRayDirection, kShadowRay);
+            Intersection shadowRayIntersection;
+
+            if(!wPtr->objectSet.intersect(shadowRay, shadowRayIntersection, tLight)) {
+                float facingRatio = std::max(0.0f, intersection.normal.dotProduct(lightDirection));
+                Vec3f lightEnergy = light->getLightEnergy(intersection);
+
+                currentColor = intersection.color * facingRatio * lightEnergy;
+                pixelColor = pixelColor + currentColor;
+            }
         }
     }
 

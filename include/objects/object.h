@@ -3,12 +3,15 @@
 
 #include <ray.h>
 #include <intersection.h>
+#include <limits>
 
 class Object {
 protected:
     Vec3f color;
 public:
-    virtual bool intersect(const Ray &ray, Intersection &intersection) = 0;
+    virtual bool intersect(const Ray &ray, Intersection &intersection, float tNear = std::numeric_limits<float>::max()) = 0;
+    virtual void printType() {
+    }
 };
 
 class Plane : public Object {
@@ -17,7 +20,8 @@ protected:
     bool boolseye;
 public:
     Plane(Vec3f point, Vec3f normal, Vec3f color, bool boolseye);
-    bool intersect(const Ray &ray, Intersection &intersection);
+    virtual bool intersect(const Ray &ray, Intersection &intersection, float tNear = std::numeric_limits<float>::max());
+    virtual void printType();
 };
 
 class Sphere : public Object {
@@ -26,7 +30,8 @@ private:
     float radius;
 public:
     Sphere(Vec3f center, float radius, Vec3f color);
-    bool intersect(const Ray &ray, Intersection &intersection);
+    virtual bool intersect(const Ray &ray, Intersection &intersection, float tNear = std::numeric_limits<float>::max());
+    virtual void printType();
 };
 
 

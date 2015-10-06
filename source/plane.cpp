@@ -7,7 +7,7 @@ Plane::Plane(Vec3f point, Vec3f normal, Vec3f color, bool boolseye) {
     this->boolseye = boolseye;
 }
 
-bool Plane::intersect(const Ray &ray, Intersection &intersection) {
+bool Plane::intersect(const Ray &ray, Intersection &intersection, float tNear) {
     float n, t, d;
     d = ray.direction.dotProduct(normal);
 
@@ -25,10 +25,15 @@ bool Plane::intersect(const Ray &ray, Intersection &intersection) {
             {
                 intersection.color *= 0.6f;
             }
-
+            //std::cout << "Value of t for plane : " << intersection.t << std::endl;
             return true;
         }
     }
 
     return false;
+}
+
+
+void Plane::printType() {
+    std::cout << "I am a plane" << std::endl;
 }

@@ -8,7 +8,7 @@ Sphere::Sphere(Vec3f center, float radius, Vec3f color) {
     this->color = color;
 }
 
-bool Sphere::intersect(const Ray &ray, Intersection &intersection) {
+bool Sphere::intersect(const Ray &ray, Intersection &intersection, float tNear) {
     float t0, t1;
     float radius2 = radius * radius;
     Vec3f L = ray.origin - this->center;
@@ -34,5 +34,11 @@ bool Sphere::intersect(const Ray &ray, Intersection &intersection) {
     intersection.normal = intersection.position - center;
     intersection.object = this;
 
+    //std::cout << "Value of t for sphere : " << intersection.t << std::endl;
+
     return true;
+}
+
+void Sphere::printType() {
+    std::cout << "I am a sphere" << std::endl;
 }

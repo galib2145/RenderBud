@@ -3,10 +3,16 @@
 
 #include <geometry.h>
 
+enum RayType {
+    kPrimaryRay,
+    kShadowRay
+};
+
 class Ray {
 public:
     Vec3f origin, direction;
-    Ray(Vec3f &origin, Vec3f &direction);
+    RayType rayType;
+    Ray(Vec3f &origin, Vec3f &direction, RayType rayType = kPrimaryRay);
     Vec3f getPoint(float t) const;
 };
 
