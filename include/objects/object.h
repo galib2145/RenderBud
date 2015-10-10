@@ -4,11 +4,22 @@
 #include <ray.h>
 #include <intersection.h>
 #include <limits>
+#include <physics.h>
 
 class Object {
 protected:
     Vec3f color;
 public:
+    float reflectance;
+    int id;
+
+    Object() {
+    }
+
+    Object(float reflectance) {
+        this->reflectance = reflectance;
+    }
+
     virtual bool intersect(const Ray &ray, Intersection &intersection, float tNear = std::numeric_limits<float>::max()) = 0;
     virtual void printType() {
     }
@@ -29,7 +40,7 @@ private:
     Vec3f center;
     float radius;
 public:
-    Sphere(Vec3f center, float radius, Vec3f color);
+    Sphere(Vec3f center, float radius, Vec3f color, int id, float reflectance = 0);
     virtual bool intersect(const Ray &ray, Intersection &intersection, float tNear = std::numeric_limits<float>::max());
     virtual void printType();
 };

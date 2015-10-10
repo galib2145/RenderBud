@@ -23,17 +23,20 @@ void World::build() {
 
     this->tracer = new Tracer(this);
 
-    Object* pointLight1 = new PointLight(Vec3f(1,1,1), 10.0f, Vec3f(0, .5, 0));
-    Object* pointLight2 = new PointLight(Vec3f(1,1,1), 7.0f, Vec3f(.5, .5, 0));
+    Object* pointLight1 = new PointLight(Vec3f(1,1,1), 3.0f, Vec3f(0, .5, 0));
+    Object* pointLight2 = new PointLight(Vec3f(1,1,1), 1.0f, Vec3f(.5, .5, 0));
 
-    Object* sphere1 = new Sphere(Vec3f(0, .3, -.75), .15f, Vec3f(.7, .7, .7));
-    Object* sphere2 = new Sphere(Vec3f(-.2, .2, -.3), .15f, Vec3f(.7, .7, 1));
+    Object* sphere1 = new Sphere(Vec3f(0, .2, -.5), .15f, Vec3f(.7, .7, .7), 1, 0.7);
+    Object* sphere2 = new Sphere(Vec3f(-.5, .2, -.5), .07f, Vec3f(.7, .7, .7), 1, 0.3);
+    Object* sphere3 = new Sphere(Vec3f(.5, .2, -.5), .07f, Vec3f(.7, .7, .7), 1, 0.3);
 
-    Object* plane = new Plane(Vec3f(0, -2, 0), Vec3f(0, 1, 0), Vec3f(.4, .3, .3), true);
+    Object* horizontalPlane = new Plane(Vec3f(0, -2, 0), Vec3f(0, 1, 0), Vec3f(.4, .3, .3), true);
+    Object* verticalPlane = new Plane(Vec3f(0, 0, -7), Vec3f(0, 0, 1), Vec3f(0, 0, 1), false);
 
     addObject(sphere1);
+    addObject(horizontalPlane);
     addObject(sphere2);
-    addObject(plane);
+    addObject(sphere3);
 
     addObject(pointLight1);
     addObject(pointLight2);
@@ -47,7 +50,7 @@ void World::render(Display &display, Camera &camera) {
 
     Vec3f *framebuffer = new Vec3f[display.width * display.height];
     Vec3f *pix = framebuffer;
-    int noOfSamples = 32;
+    int noOfSamples = 8;
 
     for(int j = 0; j < display.height; j++) {
         for(int i = 0; i < display.width; i++) {
@@ -66,7 +69,7 @@ void World::render(Display &display, Camera &camera) {
                 direction.normalize();
 
                 Ray ray(origin, direction);
-                pixelColor = pixelColor + tracer->trace(ray);
+                pixelColor = pixelColor + tracer->trace(ray, 1);
             }
 
             pixelColor /= noOfSamples;

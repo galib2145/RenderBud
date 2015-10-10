@@ -40,11 +40,13 @@
 		<Unit filename="include/objectSet.h" />
 		<Unit filename="include/objects/light.h" />
 		<Unit filename="include/objects/object.h" />
+		<Unit filename="include/physics.h" />
 		<Unit filename="include/ray.h" />
 		<Unit filename="include/tracer.h" />
 		<Unit filename="include/utils.h" />
 		<Unit filename="include/world.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="source/physics.cpp" />
 		<Unit filename="source/plane.cpp" />
 		<Unit filename="source/ray.cpp" />
 		<Unit filename="source/sphere.cpp" />

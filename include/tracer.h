@@ -14,7 +14,7 @@ protected:
 public:
     Tracer();
     Tracer(World* worldPtr);
-    virtual Vec3f trace(const Ray &ray);
+    virtual Vec3f trace(const Ray &ray, int depth);
 };
 
 

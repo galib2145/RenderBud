@@ -138,7 +138,7 @@ public:
         return s << '[' << v.x << ' ' << v.y << ' ' << v.z << ']';
     }
 
-    void print() {
+    void print() const {
         std::cout << x << ", " << y << ", " << z << std::endl;
     }
 
