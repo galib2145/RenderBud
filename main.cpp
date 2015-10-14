@@ -13,7 +13,7 @@ int main()
     Display display(640, 480);
 
     Matrix44f cameraToWorld;
-    Camera camera(90, cameraToWorld);
+    Camera camera(120, cameraToWorld);
 
     World world;
     world.build();
