@@ -25,7 +25,9 @@ Vec3f Tracer::trace(const Ray &ray, int depth) {
             Ray shadowRay(shadowRayOrigin, shadowRayDirection, kShadowRay);
             Intersection shadowRayIntersection;
 
-            if(!wPtr->objectSet.intersect(shadowRay, shadowRayIntersection, tLight))
+            bool shadowRayIntersected = wPtr->objectSet.intersect(shadowRay, shadowRayIntersection, tLight);
+
+            if(!shadowRayIntersected || shadowRayIntersection.object == light)
             {
                 float facingRatio = std::max(0.0f, intersection.normal.dotProduct(lightDirection));
                 Vec3f lightEnergy = light->getLightEnergy(intersection);
@@ -48,3 +50,4 @@ Vec3f Tracer::trace(const Ray &ray, int depth) {
 
     return pixelColor;
 }
+

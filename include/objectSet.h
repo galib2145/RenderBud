@@ -24,21 +24,11 @@ public:
             if(object->intersect(ray, intersection)) {
                 if(intersection.t < tNear) {
                     finalIntersection = intersection;
+                    tNear = intersection.t;
                     intersected = true;
                 }
             }
         }
-
-        /*if(intersected) {
-            finalIntersection.object->printType();
-            if(ray.rayType == kPrimaryRay) {
-                std::cout << "Value of t for primary ray intersection : " << finalIntersection.t << std::endl;
-            }
-            else {
-                std::cout << "Value of t for shadow ray intersection : " << finalIntersection.t << std::endl;
-                std::cout << "\n";
-            }
-        }*/
 
         return intersected;
     }

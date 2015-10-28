@@ -23,9 +23,9 @@ bool Plane::intersect(const Ray &ray, Intersection &intersection, float tNear) {
 
             /*if (std::fmod((intersection.position - point).length() * 0.25f, 1.0f) > 0.5f)
             {
-                intersection.color *= 0.6f;
+                intersection.color *= 0.2f;
             }*/
-            //std::cout << "Value of t for plane : " << intersection.t << std::endl;
+
             return true;
         }
     }

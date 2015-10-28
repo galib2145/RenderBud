@@ -23,22 +23,23 @@ void World::build() {
 
     this->tracer = new Tracer(this);
 
-    Object* pointLight1 = new PointLight(Vec3f(1,1,1), 3.0f, Vec3f(0, .5, 0));
-    Object* pointLight2 = new PointLight(Vec3f(1,1,1), 1.0f, Vec3f(.5, .5, 0));
+    Object* pointLight1 = new PointLight(Vec3f(1,1,1), 2.0f, Vec3f(0, 15, 1));
+    Object* pointLight2 = new PointLight(Vec3f(1,1,.5), 0.75f, Vec3f(20, 30, 5));
 
-    Object* sphere1 = new Sphere(Vec3f(0, 1, -3), 0.2f, Vec3f(.7, .7, .7), 1, 0.7);
-    Object* sphere2 = new Sphere(Vec3f(.42, 1, -3), 0.2f, Vec3f(.7, .7, .7), 1, 0.7);
-    Object* sphere3 = new Sphere(Vec3f(-.42, 1, -3), 0.2f, Vec3f(.7, .7, .7), 1, 0.7);
+    Object* areaLight1 = new AreaLight(Vec3f(1, 1, 1), 1.5f, Vec3f(5, 0, 0), Vec3f(0, 0, 5), Vec3f(-2, 8, 0));
+    Object* areaLight2 = new AreaLight(Vec3f(1, 1, .5), 0.75f, Vec3f(4, 0, 0), Vec3f(0, 0, 4), Vec3f(-2, 6, 0));
+
+    Object* sphere1 = new Sphere(Vec3f(4, 2, 0), 2.0f, Vec3f(.7, .7, 1), 1, 0);
+    Object* sphere2 = new Sphere(Vec3f(-4, 1, -2), 3.0f, Vec3f(.7, .7, .7), 1, .3);
 
     Object* horizontalPlane = new Plane(Vec3f(0, -2, 0), Vec3f(0, 1, 0), Vec3f(.4, .3, .3), true);
-    Object* verticalPlane = new Plane(Vec3f(0, 0, -7), Vec3f(0, 0, 1), Vec3f(0, 0, 1), false);
 
-    addObject(sphere1);
     addObject(horizontalPlane);
+    addObject(sphere1);
     addObject(sphere2);
-    addObject(sphere3);
 
-    addObject(pointLight1);
+    addObject(areaLight1);
+    //addObject(pointLight1);
     addObject(pointLight2);
 }
 
@@ -57,18 +58,10 @@ void World::render(Display &display, Camera &camera) {
             Vec3f pixelColor;
             for(int k = 1; k <= noOfSamples; k++) {
 
-                Vec3f origin;
-                Intersection intersection;
-                camera.worldToCamera.multVecMatrix(Vec3f(0), origin);
+                float x = (i + rng.nextFloat()) / (float)display.width;
+                float y = 1 - ((j + rng.nextFloat()) / (float)display.height);
 
-                float x = (2 * (i + rng.nextFloat()) / (float)display.width - 1) * display.aspectRatio * camera.scalingFactor;
-                float y = (1 - 2 * (j + rng.nextFloat()) / (float)display.height) * camera.scalingFactor;
-
-                Vec3f direction;
-                camera.worldToCamera.multDirMatrix(Vec3f(x, y, -1), direction);
-                direction.normalize();
-
-                Ray ray(origin, direction);
+                Ray ray = camera.makeRay(x, y);
                 pixelColor = pixelColor + tracer->trace(ray, 1);
             }
 

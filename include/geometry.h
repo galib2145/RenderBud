@@ -128,6 +128,15 @@ public:
         return *this;
     }
 
+    Vec3 getNormalizedVector()
+    {
+        T n = norm();
+        if (n > 0) {
+            T factor = 1 / sqrt(n);
+             return Vec3(x * factor, y * factor, z * factor);
+        }
+    }
+
     friend Vec3 operator * (const T &r, const Vec3 &v)
     { return Vec3<T>(v.x * r, v.y * r, v.z * r); }
     friend Vec3 operator / (const T &r, const Vec3 &v)
