@@ -2,7 +2,7 @@
 #include <utils.h>
 #include <cmath>
 
-Sphere::Sphere(Vec3f center, float radius, Vec3f color, int id, float reflectance) : Object(reflectance){
+Sphere::Sphere(Vec3f center, float radius, Vec3f color, int id, float reflectance) : Object(reflectance) {
     this->center = center;
     this->radius = radius;
     this->color = color;
@@ -34,8 +34,6 @@ bool Sphere::intersect(const Ray &ray, Intersection &intersection, float tNear) 
     intersection.position = hitPosition;
     intersection.normal = (intersection.position - center).normalize();
     intersection.object = this;
-
-    //std::cout << "Value of t for sphere : " << intersection.t << std::endl;
 
     return true;
 }

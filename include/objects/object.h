@@ -16,6 +16,10 @@ public:
     Object() {
     }
 
+    Object(Vec3f color) {
+        this->color = color;
+    }
+
     Object(float reflectance) {
         this->reflectance = reflectance;
     }
@@ -31,6 +35,15 @@ protected:
     bool boolseye;
 public:
     Plane(Vec3f point, Vec3f normal, Vec3f color, bool boolseye);
+    virtual bool intersect(const Ray &ray, Intersection &intersection, float tNear = std::numeric_limits<float>::max());
+    virtual void printType();
+};
+
+class AABB : public Object {
+protected:
+    float m_minBound, m_maxBound;
+public:
+    AABB(float minBound, float maxBound, Vec3f color);
     virtual bool intersect(const Ray &ray, Intersection &intersection, float tNear = std::numeric_limits<float>::max());
     virtual void printType();
 };
