@@ -26,21 +26,26 @@ void World::build() {
     Object* pointLight1 = new PointLight(Vec3f(1,1,1), 2.0f, Vec3f(0, 15, 1));
     Object* pointLight2 = new PointLight(Vec3f(1,1,.5), 0.75f, Vec3f(20, 30, 5));
 
-    Object* areaLight1 = new AreaLight(Vec3f(1, 1, 1), 1.5f, Vec3f(5, 0, 0), Vec3f(0, 0, 5), Vec3f(-2, 8, 0));
+    Object* areaLight1 = new AreaLight(Vec3f(1, 1, 1), 1.0f, Vec3f(5, 0, 0), Vec3f(0, 0, 5), Vec3f(-2, 8, 0));
     Object* areaLight2 = new AreaLight(Vec3f(1, 1, .5), 0.75f, Vec3f(4, 0, 0), Vec3f(0, 0, 4), Vec3f(-2, 6, 0));
 
-    Object* sphere1 = new Sphere(Vec3f(4, 2, 0), 2.0f, Vec3f(.7, .7, 1), 1, 0);
-    Object* sphere2 = new Sphere(Vec3f(-4, 1, -2), 3.0f, Vec3f(.7, .7, .7), 1, .3);
+    Object* sphere1 = new Sphere(Vec3f(4, 2, -2), 2.0f, Vec3f(.7, .7, 1), 1, 0);
+    Object* sphere2 = new Sphere(Vec3f(-4, 1, 2), 3.0f, Vec3f(.7, .7, .7), 1, .5);
+    Object* sphere = new Sphere(Vec3f(4, 2, 2), 2.0f, Vec3f(.7, .7, .7), 1, 0, .9);
 
-    Object* horizontalPlane = new Plane(Vec3f(0, -2, 0), Vec3f(0, 1, 0), Vec3f(.4, .3, .3), true);
+    Object* horizontalPlane = new Plane(Vec3f(0, -2, 0), Vec3f(0, 1, 0), Vec3f(.4, .3, .3), 0.4);
+    Object* backPlane = new Plane(Vec3f(0, 0, -6), Vec3f(0, 0, 1), Vec3f(.5, .3, .5), 0);
 
     addObject(horizontalPlane);
+    addObject(backPlane);
     addObject(sphere1);
     addObject(sphere2);
+    //addObject(sphere);
+
+    //addObject(pointLight1);
+    //addObject(pointLight2);
 
     addObject(areaLight1);
-    //addObject(pointLight1);
-    addObject(pointLight2);
 }
 
 void World::render(Display &display, Camera &camera) {
@@ -51,7 +56,7 @@ void World::render(Display &display, Camera &camera) {
 
     Vec3f *framebuffer = new Vec3f[display.width * display.height];
     Vec3f *pix = framebuffer;
-    int noOfSamples = 32;
+    int noOfSamples = 8;
 
     for(int j = 0; j < display.height; j++) {
         for(int i = 0; i < display.width; i++) {

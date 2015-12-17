@@ -2,7 +2,7 @@
 #include <utils.h>
 #include <cmath>
 
-Sphere::Sphere(Vec3f center, float radius, Vec3f color, int id, float reflectance) : Object(reflectance) {
+Sphere::Sphere(Vec3f center, float radius, Vec3f color, int id, float reflectance, float refractiveIndex) : Object(reflectance, refractiveIndex) {
     this->center = center;
     this->radius = radius;
     this->color = color;

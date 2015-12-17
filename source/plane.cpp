@@ -1,10 +1,11 @@
 #include <objects/object.h>
 
-Plane::Plane(Vec3f point, Vec3f normal, Vec3f color, bool boolseye) {
+Plane::Plane(Vec3f point, Vec3f normal, Vec3f color, float reflectance) {
     this->point = point;
     this->normal = normal;
     this->color = color;
     this->boolseye = boolseye;
+    this->m_reflectance = reflectance;
 }
 
 bool Plane::intersect(const Ray &ray, Intersection &intersection, float tNear) {

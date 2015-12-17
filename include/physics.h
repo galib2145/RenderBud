@@ -10,5 +10,7 @@ enum MaterialType {
 };
 
 Vec3f reflect(const Vec3f &I, const Vec3f &N);
+bool refract(const Vec3f &incidentDirection, const Vec3f &normal, float refractiveIndex, Vec3f &refractionDirection);
+void fresnel(const Vec3f &incidentDirection, const Vec3f &normal, const float &refractiveIndex, float &kr);
 
 #endif // PHYSICS_H
