@@ -122,6 +122,20 @@ public:
         return color * intensity;
     }
 
+    virtual bool sampleSurface(float u1,
+                               float u2,
+                               const Vec3f& referencePosition,
+                               Vec3f& surfacePosition,
+                               Vec3f& surfaceNormal) {
+        surfaceNormal = m_side1.crossProduct(m_side2).normalize();
+        surfacePosition = m_position + m_side1 * u1 + m_side2 * u2;
+
+        if (surfaceNormal.dotProduct(surfacePosition - referencePosition) > 0.0f)
+            surfaceNormal *= -1.0f;
+
+        return true;
+    }
+
 };
 
 

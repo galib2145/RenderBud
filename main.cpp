@@ -10,7 +10,7 @@ using namespace std;
 int main()
 {
     cout << "Rendering." << endl;
-    Display display(512, 512);
+    Display display(640, 640);
 
     Matrix44f cameraToWorld;
     Camera camera(45, Vec3f(0.0f, 10.0f, 20.0f),

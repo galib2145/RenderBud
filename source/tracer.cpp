@@ -5,10 +5,12 @@
 Tracer::Tracer(World* worldPtr) : wPtr(worldPtr) {
 }
 
-Vec3f Tracer::trace(const Ray &ray, int depth) {
+Vec3f Tracer::trace(const Ray &ray, int depth, Rng &rng) {
     Intersection intersection;
     Vec3f pixelColor, reflectionColor, refractionColor;
     float kr = 1;
+    int lightU = 4;
+    int lightV = 4;
 
     if(wPtr->objectSet.intersect(ray, intersection)) {
         pixelColor = intersection.emitted;
@@ -16,27 +18,45 @@ Vec3f Tracer::trace(const Ray &ray, int depth) {
         if(intersection.object->m_refractiveIndex <= 0) {
             for (std::list<Light*>::iterator it = wPtr->lights.begin(); it != wPtr->lights.end(); ++it) {
                 Light* light = *it;
-                Vec3f currentColor;
+                Vec3f lightContribution = Vec3f(0);
 
-                float tLight;
-                Vec3f lightDirection = light->getDirection(intersection, tLight);
-                lightDirection.normalize();
+                for(int i = 0; i < lightU; i++) {
+                    for(int j = 0; j < lightV; j++) {
+                        Vec3f lightPosition, lightNormal;
 
-                Vec3f shadowRayOrigin = intersection.position +  intersection.normal * 0.001f;
-                Vec3f shadowRayDirection = lightDirection;
-                Ray shadowRay(shadowRayOrigin, shadowRayDirection, kShadowRay);
-                Intersection shadowRayIntersection;
+                        // If floating point calculation is
+                        // mistaken below(meaning int) you will
+                        // get weird shadows. Might be subject
+                        // to interesting investigation
 
-                bool shadowRayIntersected = wPtr->objectSet.intersect(shadowRay, shadowRayIntersection, tLight);
+                        float u1 = (i + rng.nextFloat()) / float(lightU);
+                        float u2 = (j + rng.nextFloat()) / float(lightV);
 
-                if(!shadowRayIntersected || shadowRayIntersection.object == light)
-                {
-                    float facingRatio = std::max(0.0f, intersection.normal.dotProduct(lightDirection));
-                    Vec3f lightEnergy = light->getLightEnergy(intersection);
+                        light->sampleSurface(u1, u2, intersection.position, lightPosition, lightNormal);
 
-                    currentColor = intersection.color * facingRatio * lightEnergy;
-                    pixelColor = pixelColor + currentColor;
+                        Vec3f lightDirection = lightPosition - intersection.position;
+                        float tLight = lightDirection.length();
+                        lightDirection.normalize();
+
+                        Vec3f shadowRayOrigin = intersection.position +  intersection.normal * 0.001f;
+                        Vec3f shadowRayDirection = lightDirection;
+                        Ray shadowRay(shadowRayOrigin, shadowRayDirection, kShadowRay);
+
+                        Intersection shadowRayIntersection;
+
+                        bool shadowRayIntersected = wPtr->objectSet.intersect(shadowRay, shadowRayIntersection, tLight);
+
+                        if(!shadowRayIntersected || shadowRayIntersection.object == light)
+                        {
+                            float facingRatio = std::max(0.0f, intersection.normal.dotProduct(lightDirection));
+                            Vec3f lightEnergy = light->getLightEnergy(intersection);
+                            lightContribution = lightContribution + intersection.color * facingRatio * lightEnergy;
+                        }
+                    }
                 }
+
+                lightContribution /= lightU * lightV;
+                pixelColor = pixelColor + lightContribution;
 
             }
         }
@@ -47,7 +67,7 @@ Vec3f Tracer::trace(const Ray &ray, int depth) {
                 reflectionDirection.normalize();
                 Vec3f reflectedRayOrigin = intersection.position + intersection.normal * 0.001f;
                 Ray reflectedRay(reflectedRayOrigin, reflectionDirection);
-                reflectionColor = trace(reflectedRay, depth + 1) * intersection.object->m_reflectance * intersection.color;
+                reflectionColor = trace(reflectedRay, depth + 1, rng) * intersection.object->m_reflectance * intersection.color;
             }
 
             if(intersection.object->m_refractiveIndex > 0) {
@@ -56,7 +76,7 @@ Vec3f Tracer::trace(const Ray &ray, int depth) {
                 if(refract(ray.direction, intersection.normal, intersection.object->m_refractiveIndex, refractionDirection)) {
                     Vec3f refractedRayOrigin = intersection.position + refractionDirection * 0.001f;
                     Ray refractedRay(refractedRayOrigin, refractionDirection);
-                    refractionColor = trace(refractedRay, depth + 1);
+                    refractionColor = trace(refractedRay, depth + 1, rng);
                     fresnel(ray.direction, intersection.normal, intersection.object->m_refractiveIndex, kr);
                 }
             }

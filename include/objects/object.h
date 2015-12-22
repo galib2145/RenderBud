@@ -27,6 +27,14 @@ public:
     virtual bool intersect(const Ray &ray, Intersection &intersection, float tNear = std::numeric_limits<float>::max()) = 0;
     virtual void printType() {
     }
+
+    virtual bool sampleSurface(float u1,
+                               float u2,
+                               const Vec3f& referencePosition,
+                               Vec3f& surfacePosition,
+                               Vec3f& surfaceNormal) {
+        return false;
+    }
 };
 
 class Plane : public Object {

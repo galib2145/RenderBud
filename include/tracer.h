@@ -4,6 +4,7 @@
 #include <ray.h>
 #include <geometry.h>
 #include <intersection.h>
+#include <utils.h>
 
 
 class World;
@@ -14,7 +15,7 @@ protected:
 public:
     Tracer();
     Tracer(World* worldPtr);
-    virtual Vec3f trace(const Ray &ray, int depth);
+    virtual Vec3f trace(const Ray &ray, int depth, Rng &rng);
 };
 
 
