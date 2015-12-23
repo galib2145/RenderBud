@@ -42,8 +42,8 @@ void World::build() {
     addObject(sphere2);
     //addObject(sphere);
 
-    //addObject(pointLight1);
-    //addObject(pointLight2);
+    addObject(pointLight1);
+    addObject(pointLight2);
 
     addObject(areaLight1);
     //addObject(areaLight2);
@@ -57,7 +57,7 @@ void World::render(Display &display, Camera &camera) {
 
     Vec3f *framebuffer = new Vec3f[display.width * display.height];
     Vec3f *pix = framebuffer;
-    int noOfSamples = 4;
+    int noOfSamples = 8;
 
     for(int j = 0; j < display.height; j++) {
         for(int i = 0; i < display.width; i++) {

@@ -8,6 +8,7 @@ class Light : public Object {
 public:
     Vec3f color;
     float intensity;
+    float radius = 4.0f;
     Light(Vec3f color, float intensity) {
         this->color = color;
         this->intensity = intensity;
@@ -49,6 +50,24 @@ public:
         Vec3f totalEnergy = color * intensity;
         totalEnergy /= M_PI;
         return totalEnergy;
+    }
+
+    virtual bool sampleSurface(float u1,
+                               float u2,
+                               const Vec3f& referencePosition,
+                               Vec3f& surfacePosition,
+                               Vec3f& surfaceNormal) {
+        float x, y;
+        float r = u1 * radius;
+        float cosTheta = u2;
+        float sinTheta = sqrtf(1 - cosTheta * cosTheta);
+
+        x = cosTheta * r;
+        y = sinTheta * r;
+
+        surfacePosition = Vec3f(x, y, position.z);
+        surfaceNormal = position - referencePosition;
+        return false;
     }
 };
 
