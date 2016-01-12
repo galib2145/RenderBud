@@ -52,6 +52,7 @@
 		<Unit filename="source/ray.cpp" />
 		<Unit filename="source/sphere.cpp" />
 		<Unit filename="source/tracer.cpp" />
+		<Unit filename="source/triangle.cpp" />
 		<Unit filename="source/utils.cpp" />
 		<Unit filename="source/world.cpp" />
 		<Extensions>

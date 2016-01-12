@@ -66,6 +66,11 @@ public:
     virtual void printType();
 };
 
-
+class Triangle : public Object {
+    Vec3f m_v0, m_v1, m_v2;
+public:
+    Triangle(Vec3f v0, Vec3f v1, Vec3f v2);
+    virtual bool intersect(const Ray &ray, Intersection &intersection, float tNear = std::numeric_limits<float>::max());
+};
 
 #endif // OBJECT_H

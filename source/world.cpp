@@ -29,9 +29,11 @@ void World::build() {
     Object* areaLight1 = new AreaLight(Vec3f(1, 1, 1), 1.0f, Vec3f(5, 0, 0), Vec3f(0, 0, 5), Vec3f(-2, 8, 0));
     Object* areaLight2 = new AreaLight(Vec3f(1, 1, .5), 0.75f, Vec3f(4, 0, 0), Vec3f(0, 0, 4), Vec3f(-2, 6, 0));
 
-    Object* sphere1 = new Sphere(Vec3f(4, 2, 2), 2.0f, Vec3f(.7, .7, 1), 1, 0);
-    Object* sphere2 = new Sphere(Vec3f(-4, 1, 2), 3.0f, Vec3f(.7, .7, .7), 1, .2);
+    Object* sphere1 = new Sphere(Vec3f(4, 2, -2), 2.0f, Vec3f(.7, .7, 1), 1, 0);
+    Object* sphere2 = new Sphere(Vec3f(-4, 1, 6), 3.0f, Vec3f(.7, .7, .7), 1, .2);
     Object* sphere = new Sphere(Vec3f(2, 2, 4), 2.0f, Vec3f(.7, .7, .7), 1, 0.96, .96);
+
+    Object* triangle = new Triangle(Vec3f(-2, 2, 0), Vec3f(1, 4, 0), Vec3f(2, 2, 0));
 
     Object* horizontalPlane = new Plane(Vec3f(0, -2, 0), Vec3f(0, 1, 0), Vec3f(.7, .7, .7), 0);
     Object* backPlane = new Plane(Vec3f(0, 0, -6), Vec3f(0, 0, 1), Vec3f(.5, .3, .5), 0);
@@ -40,13 +42,15 @@ void World::build() {
     addObject(backPlane);
     addObject(sphere1);
     addObject(sphere2);
-    //addObject(sphere);
+    addObject(sphere);
+
+    //addObject(triangle);
 
     addObject(pointLight1);
-    addObject(pointLight2);
+    //addObject(pointLight2);
 
     addObject(areaLight1);
-    //addObject(areaLight2);
+    addObject(areaLight2);
 }
 
 void World::render(Display &display, Camera &camera) {
